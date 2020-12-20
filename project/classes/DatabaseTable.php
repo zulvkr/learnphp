@@ -1,8 +1,18 @@
 <?php
 class DatabaseTable
 {
-    private function query($pdo, $sql, $parameters = []) {
-        $query = $pdo->prepare($sql);
+    private $pdo;
+    private $table;
+    private $primaryKey;
+
+    public function __construct (PDO $pdo, string $table, string $primaryKey) {
+        $this->pdo = $pdo;
+        $this->table = $table;
+        $this->primaryKey = $primaryKey;
+    }
+
+    private function query($sql, $parameters = []) {
+        $query = $this->pdo->prepare($sql);
         $query->execute($parameters);
         return $query;
     }
@@ -17,20 +27,20 @@ class DatabaseTable
         return $fields;
     }
 
-    public function findAll($pdo, $table) {
-        $result = $this->query($pdo, 'SELECT * FROM `' . $table . '`');
+    public function findAll() {
+        $result = $this->query('SELECT * FROM `'.$this->table.'`');
 
         return $result->fetchAll();
     }
 
-    public function delete($pdo, $table, $primaryKey, $id) {
+    public function delete($id) {
         $parameters = [':id' => $id];
 
-        $this->query($pdo, 'DELETE FROM `'.$table.'` WHERE `'.$primaryKey.'` = :id', $parameters );
+        $this->query('DELETE FROM `'.$this->table.'` WHERE `'.$this->primaryKey.'` = :id', $parameters );
     }
 
-    private function insert($pdo, $table, $fields) {
-        $query = 'INSERT INTO `'.$table.'` (';
+    private function insert($fields) {
+        $query = 'INSERT INTO `'.$this->table.'` (';
 
         foreach ($fields as $key => $value) {
             $query .= '`' . $key . '`,';
@@ -50,11 +60,11 @@ class DatabaseTable
 
         $fields = $this->processDates($fields);
 
-        $this->query($pdo, $query, $fields); 
+        $this->query($query, $fields); 
     }
 
-    private function update($pdo, $table, $primaryKey, $fields) {
-        $query = 'UPDATE `'.$table.'` SET ';
+    private function update($fields) {
+        $query = 'UPDATE `'.$this->table.'` SET ';
 
         foreach ($fields as $key => $value) {
             $query .= '`' . $key . '` = :' . $key . ',';
@@ -62,37 +72,37 @@ class DatabaseTable
 
         $query = rtrim($query, ',');
 
-        $query .= ' WHERE `'.$primaryKey.'` = :primaryKey';
+        $query .= ' WHERE `'.$this->primaryKey.'` = :primaryKey';
 
         // Set primary key
         $fields['primaryKey'] = $fields['id'];
 
         $fields = $this->processDates($fields);
 
-        $this->query($pdo, $query, $fields);
+        $this->query($query, $fields);
     }
 
-    public function findById($pdo, $table, $primaryKey, $value) {
-        $sql = 'SELECT * FROM `'.$table.'` WHERE `'.$primaryKey.'` = :value';
+    public function findById($value) {
+        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `'.$this->primaryKey.'` = :value';
         $parameters = [':value' => $value];
-        $query = $this->query($pdo, $sql, $parameters);
+        $query = $this->query($sql, $parameters);
         return $query->fetch();
     }
 
-    public function total($pdo, $table) {
-        $query = $this->query($pdo, 'SELECT COUNT(*) FROM `'.$table.'`');
+    public function total() {
+        $query = $this->query('SELECT COUNT(*) FROM `'.$this->table .'`');
         $row = $query->fetch();
         return $row[0];
     }
 
-    public function save($pdo, $table, $primaryKey, $record) {
+    public function save($record) {
         try {
-            if ($record[$primaryKey] == '') {
-                $record[$primaryKey] = null;
+            if ($record[$this->primaryKey] == '') {
+                $record[$this->primaryKey] = null;
             }
-            $this->insert($pdo, $table, $record);
+            $this->insert($record);
         } catch (PDOException $e) {
-            $this->update($pdo, $table, $primaryKey, $record);
+            $this->update($record);
         }
     }
 }
