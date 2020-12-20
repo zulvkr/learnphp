@@ -3,19 +3,20 @@
     include __DIR__ . '/../includes/DatabaseFunctions.php';
 
 try {
-    if (isset($_POST['joketext'])) {
-        
+    if (isset($_POST['joke'])) {
+    
+        $joke = $_POST['joke'];
+        $joke['authorid'] = 1;
+        $joke['jokedate'] = new DateTime();
 
-        updateJoke($pdo, [ 
-            'id' => $_POST['jokeid'], 
-            'joketext' => $_POST['joketext'], 
-            'authorid' => 1
-        ]);
+        save($pdo, 'joke', 'id', $joke);
 
         header('location: jokes.php');
 
     } else {
-        $joke = getJoke($pdo, $_GET['id']);
+        if (isset($_GET['id'])) {
+            $joke = findById($pdo, 'joke', 'id', $_GET['id']);
+        }
 
         $title = 'Edit joke ';
 
