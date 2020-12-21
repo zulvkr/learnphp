@@ -1,10 +1,13 @@
 <!doctype html>
 <html>
+
 <head>
-<meta charset="utf-8">
-<title>Script Output</title>
+    <meta charset="utf-8">
+    <title>Script Output</title>
 </head>
+
 <body>
-<?=$output?>
+    <?= $output ?>
 </body>
+
 </html>
