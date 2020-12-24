@@ -7,7 +7,7 @@ try {
     $jokesTable = new DatabaseTable($pdo, 'joke', 'id');
     $authorsTable = new DatabaseTable($pdo, 'author', 'id');
 
-    $registerController = new RegisterController($jokesTable, $authorsTable);
+    // $registerController = new RegisterController($jokesTable, $authorsTable);
 
     $action = $_GET['action'] ?? 'home';
 

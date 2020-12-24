@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="jokes.css">
+    <link rel="stylesheet" href="/jokes.css">
     <title><?= $title ?></title>
 </head>
 
@@ -13,9 +13,9 @@
     </header>
     <nav>Publishing MySQL Data on the Web 153
         <ul>
-            <li><a href="index.php?route=joke/home">Home</a></li>
-            <li><a href="index.php?route=joke/list">Jokes List</a></li>
-            <li><a href="index.php?route=joke/edit">Add Joke</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/joke/list">Jokes List</a></li>
+            <li><a href="/joke/edit">Add Joke</a></li>
         </ul>
     </nav>
     <main>

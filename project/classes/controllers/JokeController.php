@@ -54,7 +54,7 @@ class JokeController
     {
         $this->jokesTable->delete($_POST['id']);
 
-        header('location: index.php?route=joke/list');
+        header('location: /joke/list');
     }
 
     public function edit()
@@ -67,7 +67,7 @@ class JokeController
 
             $this->jokesTable->save($joke);
 
-            header('location: jokes.php');
+            header('location: /joke/list');
         } else {
             if (isset($_GET['id'])) {
                 $joke = $this->jokesTable->findById($_GET['id']);
