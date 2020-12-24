@@ -33,6 +33,7 @@ try {
             $controller = new JokeController($jokesTable, $authorsTable);
             $page = $controller->home();
 
+            
         } else if ($route === 'joke/edit') {
             include __DIR__ .
                 '/../classes/controllers/JokeController.php';
