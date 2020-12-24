@@ -13,9 +13,9 @@
     </header>
     <nav>Publishing MySQL Data on the Web 153
         <ul>
-            <li><a href="index.php">Home</a></li>
-            <li><a href="index.php?action=list">Jokes List</a></li>
-            <li><a href="index.php?action=edit">Add Joke</a></li>
+            <li><a href="index.php?route=joke/home">Home</a></li>
+            <li><a href="index.php?route=joke/list">Jokes List</a></li>
+            <li><a href="index.php?route=joke/edit">Add Joke</a></li>
         </ul>
     </nav>
     <main>
