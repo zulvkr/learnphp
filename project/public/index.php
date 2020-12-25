@@ -1,12 +1,10 @@
 <?php
 try {
-    include __DIR__ . '/../includes/autoload.php';    
-    // include __DIR__ . '/../classes/EntryPoint.php';
-    // include __DIR__ . '/../classes/IjdbRoutes.php';
+    include __DIR__ . '/../includes/autoload.php';
 
     $route = ltrim(strtok($_SERVER['REQUEST_URI'], '?'), '/');
 
-    $entryPoint  = new \Ninja\EntryPoint($route, new \Ijdb\IjdbRoutes());
+    $entryPoint  = new \Ninja\EntryPoint($route, $_SERVER['REQUEST_METHOD'], new \Ijdb\IjdbRoutes());
     $entryPoint->run();
 } catch (PDOException $e) {
     $title = 'An error has occurred';
