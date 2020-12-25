@@ -15,13 +15,6 @@ class Joke
         $this->authorsTable = $authorsTable;
     }
 
-    public function home()
-    {
-        $title = 'Internet Joke Database';
-
-        return ['template' => 'home.html.php', 'title' => $title];
-    }
-
     public function list()
     {
         $result = $this->jokesTable->findAll();
@@ -44,6 +37,12 @@ class Joke
 
         $totalJokes = $this->jokesTable->total();
 
+		ob_start();
+
+		include  __DIR__ . '/../../templates/';
+
+		$output = ob_get_clean();
+
         return [
             'template' => 'jokes.html.php',
             'title' => $title,
@@ -52,6 +51,13 @@ class Joke
                 'jokes' => $jokes
             ]
         ];
+    }
+
+    public function home()
+    {
+        $title = 'Internet Joke Database';
+
+        return ['template' => 'home.html.php', 'title' => $title];
     }
 
     public function delete()
@@ -78,7 +84,7 @@ class Joke
             $joke = $this->jokesTable->findById($_GET['id']);
         }
 
-        $title = 'Edit joke ';
+        $title = 'Edit joke';
 
         return [
             'template' => 'editjoke.html.php',

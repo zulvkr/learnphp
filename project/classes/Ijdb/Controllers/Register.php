@@ -20,5 +20,12 @@ class Register
         return ['template' => 'registersuccess.html.php', 'title' => 'Registration Successful'];
     }
 
+    public function registerUser() {
+        $author = $_POST['author'];
+    
+        $this->authorsTable->save($author);
+    
+        header('Location: /author/success');
+    }
     
 }

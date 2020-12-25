@@ -1,4 +1,5 @@
 <?php
+
 namespace Ninja;
 
 class DatabaseTable
@@ -7,47 +8,45 @@ class DatabaseTable
     private $table;
     private $primaryKey;
 
-    public function __construct (\PDO $pdo, string $table, string $primaryKey) {
+    public function __construct(\PDO $pdo, string $table, string $primaryKey)
+    {
         $this->pdo = $pdo;
         $this->table = $table;
         $this->primaryKey = $primaryKey;
     }
 
-    private function query($sql, $parameters = []) {
+    private function query($sql, $parameters = [])
+    {
         $query = $this->pdo->prepare($sql);
         $query->execute($parameters);
         return $query;
     }
 
-    private function processDates($fields) {
-        foreach ($fields as $key => $value) {
-            if ($value instanceof \DateTime) {
-                $fields[$key] = $value->format('Y-m-d H:i:s');
-            }
-        }
-
-        return $fields;
+    public function total()
+    {
+        $query = $this->query('SELECT COUNT(*) FROM `' . $this->table . '`');
+        $row = $query->fetch();
+        return $row[0];
     }
 
-    public function findAll() {
-        $result = $this->query('SELECT * FROM `'.$this->table.'`');
+    public function findById($value)
+    {
+        $query = 'SELECT * FROM `' . $this->table . '` WHERE `' . $this->primaryKey . '` = :value';
 
-        return $result->fetchAll();
+        $parameters = ['value' => $value];
+        $query = $this->query($query, $parameters);
+        return $query->fetch();
     }
 
-    public function delete($id) {
-        $parameters = [':id' => $id];
 
-        $this->query('DELETE FROM `'.$this->table.'` WHERE `'.$this->primaryKey.'` = :id', $parameters );
-    }
-
-    private function insert($fields) {
-        $query = 'INSERT INTO `'.$this->table.'` (';
+    private function insert($fields)
+    {
+        $query = 'INSERT INTO `' . $this->table . '` (';
 
         foreach ($fields as $key => $value) {
             $query .= '`' . $key . '`,';
         }
-        
+
         $query =  rtrim($query, ',');
 
         $query .= ') VALUES (';
@@ -62,11 +61,12 @@ class DatabaseTable
 
         $fields = $this->processDates($fields);
 
-        $this->query($query, $fields); 
+        $this->query($query, $fields);
     }
 
-    private function update($fields) {
-        $query = 'UPDATE `'.$this->table.'` SET ';
+    private function update($fields)
+    {
+        $query = 'UPDATE `' . $this->table . '` SET ';
 
         foreach ($fields as $key => $value) {
             $query .= '`' . $key . '` = :' . $key . ',';
@@ -74,7 +74,7 @@ class DatabaseTable
 
         $query = rtrim($query, ',');
 
-        $query .= ' WHERE `'.$this->primaryKey.'` = :primaryKey';
+        $query .= ' WHERE `' . $this->primaryKey . '` = :primaryKey';
 
         // Set primary key
         $fields['primaryKey'] = $fields['id'];
@@ -84,20 +84,34 @@ class DatabaseTable
         $this->query($query, $fields);
     }
 
-    public function findById($value) {
-        $sql = 'SELECT * FROM `'.$this->table.'` WHERE `'.$this->primaryKey.'` = :value';
-        $parameters = [':value' => $value];
-        $query = $this->query($sql, $parameters);
-        return $query->fetch();
+    public function delete($id)
+    {
+        $parameters = [':id' => $id];
+
+        $this->query('DELETE FROM `' . $this->table . '` WHERE `' . $this->primaryKey . '` = :id', $parameters);
     }
 
-    public function total() {
-        $query = $this->query('SELECT COUNT(*) FROM `'.$this->table .'`');
-        $row = $query->fetch();
-        return $row[0];
+    public function findAll()
+    {
+        $result = $this->query('SELECT * FROM `' . $this->table . '`');
+
+        return $result->fetchAll();
     }
 
-    public function save($record) {
+    private function processDates($fields)
+    {
+        foreach ($fields as $key => $value) {
+            if ($value instanceof \DateTime) {
+                $fields[$key] = $value->format('Y-m-d');
+            }
+        }
+
+        return $fields;
+    }
+
+    
+    public function save($record)
+    {
         try {
             if ($record[$this->primaryKey] == '') {
                 $record[$this->primaryKey] = null;

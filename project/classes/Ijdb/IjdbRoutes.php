@@ -19,7 +19,11 @@ class IjdbRoutes implements \Ninja\Routes
                 'GET' => [
                     'controller' => $authorController,
                     'action' => 'registrationForm'
-                ]
+                ],
+                'POST' => [
+					'controller' => $authorController,
+					'action' => 'registerUser'
+				]
             ],
             'author/success' => [
                 'GET' => [
@@ -58,38 +62,5 @@ class IjdbRoutes implements \Ninja\Routes
         ];
 
         return $routes;
-
-        // if ($route === 'joke/list') {
-        //     $controller = new \Ijdb\Controllers\Joke(
-        //         $jokesTable,
-        //         $authorsTable
-        //     );
-        //     $page = $controller->list();
-        // } else if ($route === '') {
-        //     $controller = new \Ijdb\Controllers\Joke(
-        //         $jokesTable,
-        //         $authorsTable
-        //     );
-        //     $page = $controller->home();
-        // } else if ($route === 'joke/edit') {
-        //     $controller = new \Ijdb\Controllers\Joke(
-        //         $jokesTable,
-        //         $authorsTable
-        //     );
-        //     $page = $controller->edit();
-        // } else if ($route === 'joke/delete') {
-        //     $controller = new \Ijdb\Controllers\Joke(
-        //         $jokesTable,
-        //         $authorsTable
-        //     );
-        //     $page = $controller->delete();
-        // } else if ($route === 'register') {
-        //     include __DIR__ .
-        //         '/../classes/controllers/RegisterController.php';
-        //     // $controller = new RegisterController($authorsTable);
-        //     $page = $controller->showForm();
-        // }
-
-        // return $page;
     }
 }
