@@ -1,6 +1,9 @@
 <?php
+namespace Ijdb\Controllers;
 
-class JokeController
+use Ninja\DatabaseTable;
+
+class Joke
 {
     private $authorsTable;
     private $jokesTable;
@@ -63,7 +66,7 @@ class JokeController
 
             $joke = $_POST['joke'];
             $joke['authorid'] = 1;
-            $joke['jokedate'] = new DateTime();
+            $joke['jokedate'] = new \DateTime();
 
             $this->jokesTable->save($joke);
 
