@@ -2,7 +2,7 @@
 
 namespace Ijdb;
 
-class IjdbRoutes
+class IjdbRoutes implements \Ninja\Routes
 {
     public function getRoutes()
     {

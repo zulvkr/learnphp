@@ -7,7 +7,7 @@ class EntryPoint
     private $method;
     private $routes;
 
-    public function __construct($route, $method, $routes)
+    public function __construct(string $route, string $method, \Ninja\Routes $routes)
     {
         $this->route = $route;
         $this->method = $method;
