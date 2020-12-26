@@ -31,13 +31,25 @@ class DatabaseTable
 
     public function findById($value)
     {
-        $query = 'SELECT * FROM `' . $this->table . '` WHERE `' . $this->primaryKey . '` = :value';
+        $query = 'SELECT * FROM `' . $this->table . '` WHERE `' . $this->primaryKey . '` = :primaryKey';
 
-        $parameters = ['value' => $value];
+        $parameters = ['primaryKey' => $value];
+
         $query = $this->query($query, $parameters);
+
         return $query->fetch();
     }
 
+    public function find($column, $value)
+    {
+        $query = 'SELECT * FROM `' . $this->table . '` WHERE `' . $column . '` = :value';
+
+        $parameters = ['value' => $value];
+        
+        $query = $this->query($query, $parameters);
+
+        return $query->fetchAll();
+    }
 
     private function insert($fields)
     {
