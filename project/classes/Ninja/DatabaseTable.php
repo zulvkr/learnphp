@@ -47,7 +47,7 @@ class DatabaseTable
             $query .= '`' . $key . '`,';
         }
 
-        $query =  rtrim($query, ',');
+        $query = rtrim($query, ',');
 
         $query .= ') VALUES (';
 
@@ -55,7 +55,7 @@ class DatabaseTable
             $query .= ':' . $key . ',';
         }
 
-        $query =  rtrim($query, ',');
+        $query = rtrim($query, ',');
 
         $query .= ')';
 

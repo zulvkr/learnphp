@@ -2,7 +2,7 @@
 
 namespace Ijdb\Controllers;
 
-use Ninja\DatabaseTable;
+use \Ninja\DatabaseTable;
 
 class Joke
 {
