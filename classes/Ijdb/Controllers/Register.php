@@ -67,6 +67,9 @@ class Register
         // If $valid is still true, no fields were blank 
         //  and the data can be added
         if ($valid == true) {
+            //Hash the password
+            $author['password'] = password_hash($author['password'], PASSWORD_DEFAULT);
+
             $this->authorsTable->save($author);
 
             header('Location: /author/success');
