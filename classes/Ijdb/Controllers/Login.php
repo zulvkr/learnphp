@@ -37,4 +37,10 @@ class Login
         return ['template' => 'loginsuccess.html.php',
                 'title' => 'Login Successful'];
     }
+
+    public function logout() {
+        session_destroy();
+        return ['template' => 'logout.html.php',
+         'title' => 'You have been logged out'];
+    }
 }
