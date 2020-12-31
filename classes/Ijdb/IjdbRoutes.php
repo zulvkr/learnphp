@@ -8,6 +8,7 @@ class IjdbRoutes implements \Ninja\Routes
     private $authorsTable;
     private $jokesTable;
     private $authentication;
+    private $categoriesTable;
 
     public function __construct()
     {
@@ -28,6 +29,7 @@ class IjdbRoutes implements \Ninja\Routes
             [&$this->jokesTable]
         );
         $this->authentication = new \Ninja\Authentication($this->authorsTable, 'email', 'password');
+        $this->categoriesTable = new \Ninja\DatabaseTable($pdo, 'category', 'id');
     }
 
     public function getRoutes(): array
@@ -35,10 +37,12 @@ class IjdbRoutes implements \Ninja\Routes
         $jokeController = new \Ijdb\Controllers\Joke(
             $this->jokesTable,
             $this->authorsTable,
+            $this->categoriesTable,
             $this->authentication
         );
         $authorController = new \Ijdb\Controllers\Register($this->authorsTable);
         $loginController = new \Ijdb\Controllers\Login($this->authentication);
+        $categoryController = new \Ijdb\Controllers\Category($this->categoriesTable);
 
 
         $routes = [
@@ -116,6 +120,24 @@ class IjdbRoutes implements \Ninja\Routes
                     'controller' => $jokeController,
                     'action' => 'home'
                 ]
+            ],
+            'category/edit' => [
+                'POST' => [
+                    'controller' => $categoryController,
+                    'action' => 'saveEdit'
+                ],
+                'GET' => [
+                    'controller' => $categoryController,
+                    'action' => 'edit'
+                ],
+                'login' => true
+            ],
+            'category/list' => [
+                'GET' => [
+                    'cotroller' => $categoryController,
+                    'action' => 'list'
+                ],
+                'login' => true
             ]
         ];
 
