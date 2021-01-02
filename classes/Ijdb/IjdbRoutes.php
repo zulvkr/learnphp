@@ -19,7 +19,7 @@ class IjdbRoutes implements \Ninja\Routes
             'joke',
             'id',
             '\Ijdb\Entity\Joke',
-            [&$this->authorsTable]
+            [&$this->authorsTable, &$this->jokeCategoriesTable]
         );
         $this->authorsTable = new \Ninja\DatabaseTable(
             $pdo,
@@ -28,8 +28,9 @@ class IjdbRoutes implements \Ninja\Routes
             'Ijdb\Entity\Author',
             [&$this->jokesTable]
         );
-        $this->authentication = new \Ninja\Authentication($this->authorsTable, 'email', 'password');
         $this->categoriesTable = new \Ninja\DatabaseTable($pdo, 'category', 'id');
+        $this->jokeCategoriesTable = new \Ninja\DatabaseTable($pdo, 'joke_category', 'categoryId');
+        $this->authentication = new \Ninja\Authentication($this->authorsTable, 'email', 'password');
     }
 
     public function getRoutes(): array
@@ -134,10 +135,16 @@ class IjdbRoutes implements \Ninja\Routes
             ],
             'category/list' => [
                 'GET' => [
-                    'cotroller' => $categoryController,
+                    'controller' => $categoryController,
                     'action' => 'list'
                 ],
                 'login' => true
+            ],
+            'category/delete' => [
+                'POST' => [
+                    'controller' => $categoryController,
+                    'action' => 'delete'
+                ],
             ]
         ];
 

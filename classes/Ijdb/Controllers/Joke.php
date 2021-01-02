@@ -79,7 +79,7 @@ class Joke
 
         foreach ($_POST['category'] as $categoryId) {
             $jokeEntity->addCategory($categoryId);
-            }
+        }
 
         header('location: /joke/list');
     }
@@ -87,7 +87,7 @@ class Joke
     public function edit()
     {
         $author = $this->authentication->getUser();
-        $categories = $this -> categoriesTable ->findAll();
+        $categories = $this->categoriesTable->findAll();
 
         if (isset($_GET['id'])) {
             $joke = $this->jokesTable->findById($_GET['id']);
@@ -101,7 +101,8 @@ class Joke
             'variables' => [
                 'joke' => $joke ?? null,
                 'userId' => $author->id ?? null,
-                'categories' => $categories            ]
+                'categories' => $categories
+            ]
         ];
     }
 }

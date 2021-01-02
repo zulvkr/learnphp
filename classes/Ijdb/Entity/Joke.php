@@ -10,10 +10,15 @@ class Joke
     public $joketext;
     private $authorsTable;
     private $author;
+    private $jokeCategoriesTable;
 
-    public function __construct(\Ninja\DatabaseTable $authorsTable)
+    public function __construct(
+        \Ninja\DatabaseTable $authorsTable,
+        \Ninja\DatabaseTable $jokeCategoriesTable
+        )
     {
         $this->authorsTable = $authorsTable;
+        $this->jokeCategoriesTable =$jokeCategoriesTable;
     }
 
     public function getAuthor()
@@ -23,5 +28,13 @@ class Joke
         }
 
         return $this->author;
+    }
+
+    public function addCategory($categoryId)
+    {
+        $jokeCat = ['jokeId' => $this->id,
+        'categoryId' => $categoryId ];
+
+        $this->jokeCategoriesTable->save($jokeCat);
     }
 }
