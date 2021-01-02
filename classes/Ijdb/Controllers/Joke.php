@@ -26,7 +26,13 @@ class Joke
 
     public function list()
     {
-        $jokes = $this->jokesTable->findAll();
+        if (isset($_GET['category'])) {
+            //return category entity
+            $category = $this->categoriesTable->findById($_GET['category']);
+            $jokes = $category->getJokes();
+        } else {
+            $jokes = $this->jokesTable->findAll();
+        }
 
         $title = 'Joke list';
 
