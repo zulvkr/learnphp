@@ -50,7 +50,7 @@ class Register
             $valid = false;
             $errors[] = 'Invalid email address';
         } else { // If the email is not blank and valid:
-                // convert the email to lowercase
+            // convert the email to lowercase
             $author['email'] = strtolower($author['email']);
 
             if (count($this->authorsTable->find('email', $author['email'])) > 0) {
@@ -83,5 +83,46 @@ class Register
                 ]
             ];
         }
+    }
+
+    public function list()
+    {
+        $authors = $this->authorsTable->findAll();
+
+        return [
+            'template' => 'authorlist.html.php',
+            'title' => 'Author List',
+            'variables' => [
+                'authors' => $authors
+            ]
+        ];
+    }
+
+    public function permissions()
+    {
+        $author = $this->authorsTable->findById($_GET['id']);
+
+        $reflected = new \ReflectionClass('\Ijdb\Entity\Author');
+        $constants = $reflected->getConstants();
+
+        return [
+            'template' => 'permissions.html.php',
+            'title' => 'Edit permissions',
+            'variables' => [
+                'author' => $author,
+                'permissions' => $constants
+            ]
+            ];
+    }
+
+    public function savePermissions() {
+        $author = [
+            'id' => $_GET['id'],
+            'permissions' => array_sum($_POST['permissions'] ?? [])
+        ];
+
+        $this->authorsTable->save($author);
+
+        header('location: /author/list');
     }
 }

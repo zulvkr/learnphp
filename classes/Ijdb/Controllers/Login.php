@@ -43,4 +43,9 @@ class Login
         return ['template' => 'logout.html.php',
          'title' => 'You have been logged out'];
     }
+
+    public function permissionError()
+    {
+        return ['template' => 'permissionerror.html.php', 'title' => 'Thou shall not pass'];
+    }
 }
